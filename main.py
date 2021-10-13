@@ -110,10 +110,9 @@ def load_data_to_xlsx(df, filename):
 
 def load_data_to_db(name):
   db = sqlite3.connect('database.db3')
-  dir_path = os.path.dirname(os.path.realpath(__file__)) + '/output/'
-  df_clientes = pd.read_excel(dir_path + name + '.xlsx', sheet_name=name)
-  for table, df in df_clientes.items():
-    df.to_sql(table, db)
+  dir_path = os.path.dirname(os.path.realpath(__file__)) + '/output/' + name + '.xlsx'
+  df= pd.read_excel(dir_path, sheet_name=name)
+  df.to_sql(name, db)
 
 if __name__ == '__main__':
   main()
