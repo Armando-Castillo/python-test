@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from numpy import int16
 import pandas as pd
 import os 
@@ -38,39 +38,42 @@ def clean_data(df):
   #DATA MISSING HANDLING
   df[['email', 'status']] = df[['email', 'status']].fillna(value='None')
   df[['priority', 'phone']] = df[['priority', 'phone']].fillna(value=0)
-  #DATA STRUCTURE
+  #DATA STRUCTURE AND FORMAT
   df[['fiscal_id', 'first_name', 'last_name', 'gender', 'address', 'email', 'status', 'phone']] = df[[
     'fiscal_id', 'first_name', 'last_name', 'gender', 'address', 'email', 'status', 'phone'
   ]].astype('string')
   df['birth_date'] = pd.to_datetime(df['birth_date'])
   df['due_date'] = pd.to_datetime(df['due_date'])
   df['priority'] = df['priority'].astype(int16)
+  #DATA FORMAT UPPER
+  df = df.applymap(lambda x:x.upper() if type(x) == str else x)
   return df
 
 
 def etl_process(df):
   clients_df = transform_clientes_df(df)
-  print(clients_df)
+  load_data(clients_df, 'clientes.xlsx')
+  emails_df = df[['fiscal_id', 'email', 'status', 'priority']]
+  load_data(emails_df, 'emails.xlsx')
+  phones_df = df[['fiscal_id', 'phone', 'status', 'priority']]
+  load_data(phones_df, 'phones.xlsx')
   return 1
   
 
-def load_data(df):
-  dir_path = os.path.dirname(os.path.realpath(__file__)) + '/output/'
-  location_file = dir_path + 'clientes.xlsx'
-  df.to_excel(location_file)
-
- 
 def transform_clientes_df(df):
-  df['age'] = df['birth_date'].apply(lambda x: get_age(x))
-  df['age_group'] = df['age'].apply(lambda x: get_age_group(x))
-  clients_df = df[['age', 'age_group']]
+  df['age'] = df['birth_date'].apply(lambda x: get_age(x)).astype(int16)
+  df['age_group'] = df['age'].apply(lambda x: get_age_group(x)).astype(int16)
+  df['delinquency'] = df['due_date'].apply(lambda x: get_delinquency(x))
+  clients_df = df[['fiscal_id', 'first_name', 'last_name', 'gender', 
+    'birth_date', 'age', 'age_group', 'due_date', 'delinquency', 'due_balance', 'address']]
+  print(clients_df.info())
   return clients_df
 
 
 def get_age(born):
-    today = date.today()
-    age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
-    return age
+  today = date.today()
+  age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+  return age
   
 
 def get_age_group(age):
@@ -87,6 +90,18 @@ def get_age_group(age):
     else:
       age_group = 6
     return age_group
+ 
+ 
+def get_delinquency(due_date):
+  return datetime.today().day - due_date.day
+
+
+def load_data(df, filename):
+  dir_path = os.path.dirname(os.path.realpath(__file__)) + '/output/'
+  location_file = dir_path + filename
+  df.to_excel(location_file)
+  return 1
+
 
 if __name__ == '__main__':
   main()
