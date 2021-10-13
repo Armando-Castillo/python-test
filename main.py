@@ -9,7 +9,7 @@ import sqlite3
 def main():
   #Read path for data source
   data_source = input("Ingrese ruta/path del data source: ")
-  df = read_data('/home/armando/colektia/clientes.csv')
+  df = read_data(data_source)
   clean_df = clean_data(df)
   if etl_process(clean_df):
     print("ETL process complete")
