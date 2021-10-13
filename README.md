@@ -21,3 +21,11 @@ Una vez ejecutado el entrono virtual, instalar dependencias
 ```
     pip3 install -r requirements.txt
 ```
+
+Ejecutar el programa
+```
+    python3 main.py
+```
+```
+    python main.py
+```
