@@ -2,6 +2,7 @@ from datetime import date, datetime
 from numpy import int16
 import pandas as pd
 import os 
+import sqlite3
 
 #/home/armando/colektia/clientes.csv
     
@@ -52,11 +53,15 @@ def clean_data(df):
 
 def etl_process(df):
   clients_df = transform_clientes_df(df)
-  load_data_to_xlsx(clients_df, 'clientes.xlsx')
+  load_data_to_xlsx(clients_df, 'clientes')
   emails_df = df[['fiscal_id', 'email', 'status', 'priority']]
-  load_data_to_xlsx(emails_df, 'emails.xlsx')
+  load_data_to_xlsx(emails_df, 'emails')
   phones_df = df[['fiscal_id', 'phone', 'status', 'priority']]
-  load_data_to_xlsx(phones_df, 'phones.xlsx')
+  load_data_to_xlsx(phones_df, 'phones')
+  
+  load_data_to_db('clientes')
+  load_data_to_db('emails')
+  load_data_to_db('phones')
   return 1
   
 
@@ -98,10 +103,17 @@ def get_delinquency(due_date):
 
 def load_data_to_xlsx(df, filename):
   dir_path = os.path.dirname(os.path.realpath(__file__)) + '/output/'
-  location_file = dir_path + filename
-  df.to_excel(location_file)
+  location_file = dir_path + filename + '.xlsx'
+  df.to_excel(location_file, sheet_name=filename)
   return 1
 
+
+def load_data_to_db(name):
+  db = sqlite3.connect('database.db3')
+  dir_path = os.path.dirname(os.path.realpath(__file__)) + '/output/'
+  df_clientes = pd.read_excel(dir_path + name + '.xlsx', sheet_name=name)
+  for table, df in df_clientes.items():
+    df.to_sql(table, db)
 
 if __name__ == '__main__':
   main()
