@@ -52,11 +52,11 @@ def clean_data(df):
 
 def etl_process(df):
   clients_df = transform_clientes_df(df)
-  load_data(clients_df, 'clientes.xlsx')
+  load_data_to_xlsx(clients_df, 'clientes.xlsx')
   emails_df = df[['fiscal_id', 'email', 'status', 'priority']]
-  load_data(emails_df, 'emails.xlsx')
+  load_data_to_xlsx(emails_df, 'emails.xlsx')
   phones_df = df[['fiscal_id', 'phone', 'status', 'priority']]
-  load_data(phones_df, 'phones.xlsx')
+  load_data_to_xlsx(phones_df, 'phones.xlsx')
   return 1
   
 
@@ -96,7 +96,7 @@ def get_delinquency(due_date):
   return datetime.today().day - due_date.day
 
 
-def load_data(df, filename):
+def load_data_to_xlsx(df, filename):
   dir_path = os.path.dirname(os.path.realpath(__file__)) + '/output/'
   location_file = dir_path + filename
   df.to_excel(location_file)
