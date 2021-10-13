@@ -2,15 +2,22 @@
 
 ETL data pipeline from clients.csv to excel files and a db
 
+Crear tu virtualenv
 ```
-    virtualenv -p . colektia
-```
-
-```
-    source colektia/bin/activate
-    .\colektia\Scripts\activate.bat
+    virtualenv -p . venv
 ```
 
+Activar el virtualenv en linux
+```
+    source venv/bin/activate
+```
+
+Activar el virtualenv en windows
+```
+    .\venv\Scripts\activate.bat
+```
+
+Una vez ejecutado el entrono virtual, instalar dependencias
 ```
     pip3 install -r requirements.txt
 ```
