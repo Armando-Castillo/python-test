@@ -3,8 +3,6 @@ from numpy import int16
 import pandas as pd
 import os 
 import sqlite3
-
-#/home/armando/colektia/clientes.csv
     
 def main():
   #Read path for data source
@@ -104,7 +102,6 @@ def get_delinquency(due_date):
 def load_data_to_xlsx(df, filename):
   dir_path = os.path.dirname(os.path.realpath(__file__)) + '/output/'
   location_file = dir_path + filename + '.xlsx'
-  print(df)
   df.to_excel(location_file, sheet_name=filename, index=False)
   return 1
 
