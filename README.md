@@ -2,30 +2,30 @@
 
 ETL data pipeline from clients.csv to excel files and a db
 
-Crear tu virtualenv
+1. Crear tu virtualenv
 ```
-    virtualenv -p . venv
-```
-
-Activar el virtualenv en linux
-```
-    source venv/bin/activate
+virtualenv -p . venv
 ```
 
-Activar el virtualenv en windows
+2.0 Activar el virtualenv en linux
 ```
-    .\venv\Scripts\activate.bat
-```
-
-Una vez ejecutado el entrono virtual, instalar dependencias
-```
-    pip3 install -r requirements.txt
+source venv/bin/activate
 ```
 
-Ejecutar el programa
+2.1 Activar el virtualenv en windows
 ```
-    python3 main.py
+.\venv\Scripts\activate.bat
+```
+
+2.2 Una vez ejecutado el entrono virtual, instalar dependencias
+```
+pip3 install -r requirements.txt
+```
+
+2.3 Ejecutar el programa
+```
+python3 main.py
 ```
 ```
-    python main.py
+python main.py
 ```

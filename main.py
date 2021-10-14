@@ -8,7 +8,11 @@ def main():
   #Read path for data source
   data_source = input("Ingrese ruta/path del data source: ")
   df = read_data(data_source)
+  
+  #Clean data and returns a df
   clean_df = clean_data(df)
+  
+  #ETL process
   if etl_process(clean_df):
     print("ETL process complete")
   else:
@@ -50,13 +54,19 @@ def clean_data(df):
 
 
 def etl_process(df):
+  #generate clients df
   clients_df = transform_clientes_df(df)
   load_data_to_xlsx(clients_df, 'clientes')
+  
+  #generate emails df
   emails_df = df[['fiscal_id', 'email', 'status', 'priority']]
   load_data_to_xlsx(emails_df, 'emails')
+  
+  #generate phones df
   phones_df = df[['fiscal_id', 'phone', 'status', 'priority']]
   load_data_to_xlsx(phones_df, 'phones')
   
+  #Insert xlsx into sqlite3
   load_data_to_db('clientes')
   load_data_to_db('emails')
   load_data_to_db('phones')
@@ -64,6 +74,7 @@ def etl_process(df):
   
 
 def transform_clientes_df(df):
+  #Lambdas for aggregate funcitons
   df['age'] = df['birth_date'].apply(lambda x: get_age(x)).astype(int16)
   df['age_group'] = df['age'].apply(lambda x: get_age_group(x)).astype(int16)
   df['delinquency'] = df['due_date'].apply(lambda x: get_delinquency(x))
