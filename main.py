@@ -104,7 +104,8 @@ def get_delinquency(due_date):
 def load_data_to_xlsx(df, filename):
   dir_path = os.path.dirname(os.path.realpath(__file__)) + '/output/'
   location_file = dir_path + filename + '.xlsx'
-  df.to_excel(location_file, sheet_name=filename)
+  print(df)
+  df.to_excel(location_file, sheet_name=filename, index=False)
   return 1
 
 
