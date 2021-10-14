@@ -80,7 +80,6 @@ def transform_clientes_df(df):
   df['delinquency'] = df['due_date'].apply(lambda x: get_delinquency(x))
   clients_df = df[['fiscal_id', 'first_name', 'last_name', 'gender', 
     'birth_date', 'age', 'age_group', 'due_date', 'delinquency', 'due_balance', 'address']]
-  print(clients_df.info())
   return clients_df
 
 
