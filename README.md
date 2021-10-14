@@ -1,4 +1,4 @@
-# test-etl
+# ETL data pipeline (csv -> xlsx, sqlite3)
 
 ETL data pipeline from clients.csv to excel files and a db
 
